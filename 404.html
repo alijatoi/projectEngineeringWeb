@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex">
+    <title>404 — Redirecting…</title>
+    <script>
+      (function () {
+        var redirectTo = location.pathname + location.search + location.hash;
+        // Try to load the index page and rewrite history to preserve the original URL
+        fetch('/index.html')
+          .then(function (r) { return r.text(); })
+          .then(function (html) {
+            document.open();
+            document.write(html);
+            document.close();
+            try {
+              history.replaceState(null, '', redirectTo);
+            } catch (e) {
+              // fallback: do nothing, the app should still handle routing
+            }
+          })
+          .catch(function () {
+            // If fetching index fails, fall back to root
+            window.location.replace('/');
+          });
+      })();
+    </script>
+  </head>
+  <body>
+    Redirecting…
+  </body>
+</html>
